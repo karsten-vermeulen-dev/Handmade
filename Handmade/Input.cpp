@@ -10,22 +10,22 @@ Input* Input::Instance()
 //======================================================================================================
 char Input::GetKey() const
 {
-	return m_key;
+	return key;
 }
 //======================================================================================================
 int Input::GetMouseWheel() const
 {
-	return m_mouseWheel;
+	return mouseWheel;
 }
 //======================================================================================================
 const SDL_Point& Input::GetMouseMotion() const
 {
-	return m_mouseMotion;
+	return mouseMotion;
 }
 //======================================================================================================
 const SDL_Point& Input::GetMousePosition() const
 {
-	return m_mousePosition;
+	return mousePosition;
 }
 //======================================================================================================
 void Input::SetCursorState(bool isCursorEnabled, bool isCursorVisible)
@@ -36,43 +36,43 @@ void Input::SetCursorState(bool isCursorEnabled, bool isCursorVisible)
 //======================================================================================================
 bool Input::IsWindowClosed() const
 {
-	return m_isWindowClosed;
+	return isWindowClosed;
 }
 //======================================================================================================
 bool Input::IsKeyPressed() const
 {
-	return m_isKeyPressed;
+	return isKeyPressed;
 }
 //======================================================================================================
 bool Input::IsKeyPressed(int keyCode) const
 {
-	const Uint8* m_keyStates = SDL_GetKeyboardState(nullptr);
-	return m_keyStates[keyCode];
+	const Uint8* keyStates = SDL_GetKeyboardState(nullptr);
+	return keyStates[keyCode];
 }
 //======================================================================================================
 bool Input::IsModifierPressed(int modifier_1, int modifier_2) const
 {
-	return m_modifier == (modifier_1 | modifier_2);
+	return modifier == (modifier_1 | modifier_2);
 }
 //======================================================================================================
 bool Input::IsMouseClicked() const
 {
-	return m_isMouseClicked;
+	return isMouseClicked;
 }
 //======================================================================================================
 bool Input::IsMouseClicked(int mouseButton_1, int mouseButton_2) const
 {
-	return m_mouseButton == (mouseButton_1 | mouseButton_2);
+	return mouseButton == (mouseButton_1 | mouseButton_2);
 }
 //======================================================================================================
 void Input::Update()
 {
 	SDL_Event events;
 
-	m_mouseWheel = 0;
-	m_mouseMotion.x = 0;
-	m_mouseMotion.y = 0;
-	m_isWindowClosed = false;
+	mouseWheel = 0;
+	mouseMotion.x = 0;
+	mouseMotion.y = 0;
+	isWindowClosed = false;
 
 	while (SDL_PollEvent(&events))
 	{
@@ -81,53 +81,53 @@ void Input::Update()
 
 		case SDL_QUIT:
 		{
-			m_isWindowClosed = true;
+			isWindowClosed = true;
 			break;
 		}
 
 		case SDL_KEYUP:
 		{
-			m_isKeyPressed = false;
-			m_key = SDLK_UNKNOWN;
-			m_modifier = events.key.keysym.mod;
+			isKeyPressed = false;
+			key = SDLK_UNKNOWN;
+			modifier = events.key.keysym.mod;
 			break;
 		}
 
 		case SDL_KEYDOWN:
 		{
-			m_isKeyPressed = true;
-			m_key = events.key.keysym.sym;
-			m_modifier |= events.key.keysym.mod;
+			isKeyPressed = true;
+			key = events.key.keysym.sym;
+			modifier |= events.key.keysym.mod;
 			break;
 		}
 
 		case SDL_MOUSEMOTION:
 		{
-			m_mousePosition.x = events.motion.x;
-			m_mousePosition.y = events.motion.y;
+			mousePosition.x = events.motion.x;
+			mousePosition.y = events.motion.y;
 
-			m_mouseMotion.x = events.motion.xrel;
-			m_mouseMotion.y = events.motion.yrel;
+			mouseMotion.x = events.motion.xrel;
+			mouseMotion.y = events.motion.yrel;
 			break;
 		}
 
 		case SDL_MOUSEWHEEL:
 		{
-			m_mouseWheel = events.wheel.y;
+			mouseWheel = events.wheel.y;
 			break;
 		}
 
 		case SDL_MOUSEBUTTONUP:
 		{
-			m_isMouseClicked = false;
-			m_mousePosition.x = events.motion.x;
-			m_mousePosition.y = events.motion.y;
+			isMouseClicked = false;
+			mousePosition.x = events.motion.x;
+			mousePosition.y = events.motion.y;
 
 			switch (events.button.button)
 			{
-			case SDL_BUTTON_LEFT: { m_mouseButton ^= HM_MOUSE_LEFT; break;   }
-			case SDL_BUTTON_MIDDLE: { m_mouseButton ^= HM_MOUSE_MIDDLE; break; }
-			case SDL_BUTTON_RIGHT: { m_mouseButton ^= HM_MOUSE_RIGHT; break;  }
+			case SDL_BUTTON_LEFT: { mouseButton ^= HM_MOUSE_LEFT; break;   }
+			case SDL_BUTTON_MIDDLE: { mouseButton ^= HM_MOUSE_MIDDLE; break; }
+			case SDL_BUTTON_RIGHT: { mouseButton ^= HM_MOUSE_RIGHT; break;  }
 			}
 
 			break;
@@ -135,15 +135,15 @@ void Input::Update()
 
 		case SDL_MOUSEBUTTONDOWN:
 		{
-			m_isMouseClicked = true;
-			m_mousePosition.x = events.motion.x;
-			m_mousePosition.y = events.motion.y;
+			isMouseClicked = true;
+			mousePosition.x = events.motion.x;
+			mousePosition.y = events.motion.y;
 
 			switch (events.button.button)
 			{
-			case SDL_BUTTON_LEFT: { m_mouseButton |= HM_MOUSE_LEFT; break;   }
-			case SDL_BUTTON_MIDDLE: { m_mouseButton |= HM_MOUSE_MIDDLE; break; }
-			case SDL_BUTTON_RIGHT: { m_mouseButton |= HM_MOUSE_RIGHT; break;  }
+			case SDL_BUTTON_LEFT: { mouseButton |= HM_MOUSE_LEFT; break;   }
+			case SDL_BUTTON_MIDDLE: { mouseButton |= HM_MOUSE_MIDDLE; break; }
+			case SDL_BUTTON_RIGHT: { mouseButton |= HM_MOUSE_RIGHT; break;  }
 			}
 
 			break;

@@ -26,8 +26,8 @@ private:
 
 	void RemoveState();
 
-	int m_deltaTime{ 0 };
+	int deltaTime{ 0 };
 	//std::deque<GameState*> m_gameStates;
-	std::unique_ptr<GameState> m_gameState;
+	std::unique_ptr<GameState> gameState;
 
 };

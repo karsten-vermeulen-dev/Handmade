@@ -3,8 +3,8 @@
 #include "Text.h"
 #include "Utility.h"
 
-std::string Text::s_rootFolder = "Assets/Fonts/";
-std::unique_ptr<Fonts> Text::s_fonts = std::make_unique<Fonts>();
+std::string Text::rootFolder = "Assets/Fonts/";
+std::unique_ptr<Fonts> Text::fonts = std::make_unique<Fonts>();
 
 //======================================================================================================
 bool Text::Initialize()
@@ -21,20 +21,20 @@ bool Text::Initialize()
 //======================================================================================================
 bool Text::Load(const std::string& filename, const std::string& tag, FontSize fontSize)
 {
-	assert(s_fonts->find(tag) == s_fonts->end());
+	assert(fonts->find(tag) == fonts->end());
 
-	TTF_Font* font = TTF_OpenFont((s_rootFolder + filename).c_str(), static_cast<int>(fontSize));
+	TTF_Font* font = TTF_OpenFont((rootFolder + filename).c_str(), static_cast<int>(fontSize));
 
 	if (!font)
 	{
 		Utility::Log(Utility::Destination::WindowsMessageBox,
-			"Error loading font file \"" + (s_rootFolder + filename) + "\"\n\n"
+			"Error loading font file \"" + (rootFolder + filename) + "\"\n\n"
 			"Possible causes could be a corrupt or missing file. Another reason could be "
 			"that the filename and/or path are incorrectly spelt.", Utility::Severity::Failure);
 		return false;
 	}
 
-	s_fonts->insert(std::pair<std::string, TTF_Font*>(tag, font));
+	fonts->insert(std::pair<std::string, TTF_Font*>(tag, font));
 	return true;
 }
 //======================================================================================================
@@ -42,20 +42,20 @@ void Text::Unload(const std::string& tag)
 {
 	if (!tag.empty())
 	{
-		auto it = s_fonts->find(tag);
-		assert(it != s_fonts->end());
+		auto it = fonts->find(tag);
+		assert(it != fonts->end());
 		TTF_CloseFont(it->second);
-		s_fonts->erase(it);
+		fonts->erase(it);
 	}
 
 	else
 	{
-		for (const auto& font : *s_fonts)
+		for (const auto& font : *fonts)
 		{
 			TTF_CloseFont(font.second);
 		}
 
-		s_fonts->clear();
+		fonts->clear();
 	}
 }
 //======================================================================================================
@@ -66,55 +66,55 @@ void Text::Shutdown()
 //======================================================================================================
 Text::Text(const Text& copy)
 {
-	m_texture = nullptr;
-	m_font = copy.m_font;
-	m_color = copy.m_color;
-	m_string = copy.m_string;
-	m_textSize = copy.m_textSize;
-	m_isDirty = true;
+	texture = nullptr;
+	font = copy.font;
+	color = copy.color;
+	string = copy.string;
+	textSize = copy.textSize;
+	isDirty = true;
 }
 //======================================================================================================
 Text::~Text()
 {
-	SDL_DestroyTexture(m_texture);
+	SDL_DestroyTexture(texture);
 }
 //======================================================================================================
 const SDL_Point& Text::GetSize() const
 {
-	return m_textSize;
+	return textSize;
 }
 //======================================================================================================
 const std::string& Text::GetString() const
 {
-	return m_string;
+	return string;
 }
 //======================================================================================================
 void Text::SetSize(int width, int height)
 {
-	m_textSize.x = width;
-	m_textSize.y = height;
+	textSize.x = width;
+	textSize.y = height;
 }
 //======================================================================================================
 void Text::SetString(const std::string& string)
 {
-	m_string = string;
-	m_isDirty = true;
+	this->string = string;
+	isDirty = true;
 }
 //======================================================================================================
 void Text::SetColor(Uint8 r, Uint8 g, Uint8 b)
 {
-	m_color.r = r;
-	m_color.g = g;
-	m_color.b = b;
-	m_isDirty = true;
+	color.r = r;
+	color.g = g;
+	color.b = b;
+	isDirty = true;
 }
 //======================================================================================================
 bool Text::SetFont(const std::string& tag)
 {
-	auto it = s_fonts->find(tag);
-	assert(it != s_fonts->end());
-	m_font = (*it).second;
-	m_isDirty = true;
+	auto it = fonts->find(tag);
+	assert(it != fonts->end());
+	font = (*it).second;
+	isDirty = true;
 	return true;
 }
 //======================================================================================================
@@ -124,25 +124,25 @@ void Text::Render(int x, int y)
 
 	dst.x = x;
 	dst.y = y;
-	dst.w = m_textSize.x;
-	dst.h = m_textSize.y;
+	dst.w = textSize.x;
+	dst.h = textSize.y;
 
-	if (m_isDirty)
+	if (isDirty)
 	{
 		CreateText();
-		m_isDirty = false;
+		isDirty = false;
 	}
 
-	SDL_RenderCopy(Screen::Instance()->GetRenderer(), m_texture, nullptr, &dst);
+	SDL_RenderCopy(Screen::Instance()->GetRenderer(), texture, nullptr, &dst);
 }
 //======================================================================================================
 void Text::CreateText()
 {
-	assert(m_font != nullptr);
-	SDL_Surface* textSurface = TTF_RenderText_Blended(m_font, m_string.c_str(), m_color);
+	assert(font != nullptr);
+	SDL_Surface* textSurface = TTF_RenderText_Blended(font, string.c_str(), color);
 
-	SDL_DestroyTexture(m_texture);
-	m_texture = SDL_CreateTextureFromSurface(Screen::Instance()->GetRenderer(), textSurface);
+	SDL_DestroyTexture(texture);
+	texture = SDL_CreateTextureFromSurface(Screen::Instance()->GetRenderer(), textSurface);
 
 	SDL_FreeSurface(textSurface);
 }

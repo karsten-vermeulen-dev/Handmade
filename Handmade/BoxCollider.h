@@ -23,9 +23,9 @@ public:
 
 private:
 
-	Vector<int> m_min;
-	Vector<int> m_max;
-	Vector<int> m_position;
-	Vector<int> m_dimension{ 1, 1 };
+	Vector<int> min;
+	Vector<int> max;
+	Vector<int> position;
+	Vector<int> dimension{ 1, 1 };
 
 };

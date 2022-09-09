@@ -6,27 +6,27 @@
 //======================================================================================================
 bool PlayState::OnEnter()
 {
-	m_image.Load("Backgrounds/Play_1280x720.png", "Aircord.ogg");
+	image.Load("Backgrounds/Play_1280x720.png", "Aircord.ogg");
 	return true;
 }
 //======================================================================================================
 GameState* PlayState::Update(int deltaTime)
 {
-	m_image.PlayMusic();
+	image.PlayMusic();
 
 	if (Input::Instance()->IsKeyPressed(HM_KEY_M))
 	{
-		m_image.StopMusic();
+		image.StopMusic();
 		return new StartState;
 	}
 
 	if (Input::Instance()->IsKeyPressed(HM_KEY_Q))
 	{
-		m_image.StopMusic();
+		image.StopMusic();
 		return new EndState;
 	}
 
-	for (auto& gameObject : m_gameObjects)
+	for (auto& gameObject : gameObjects)
 	{
 		if (gameObject.IsActive())
 		{
@@ -39,9 +39,9 @@ GameState* PlayState::Update(int deltaTime)
 //======================================================================================================
 bool PlayState::Render()
 {
-	m_image.Render();
+	image.Render();
 
-	for (auto& gameObject : m_gameObjects)
+	for (auto& gameObject : gameObjects)
 	{
 		if (gameObject.IsActive() && gameObject.IsVisible())
 		{
@@ -54,5 +54,5 @@ bool PlayState::Render()
 //======================================================================================================
 void PlayState::OnExit()
 {
-	m_gameObjects.clear();
+	gameObjects.clear();
 }

@@ -1,7 +1,7 @@
 #pragma once
 #include "Vector.h"
 
-const double GRAVITY = 1.0000000000667;
+const double gravity = 1.0000000000667;
 
 class RigidBody
 {
@@ -42,16 +42,16 @@ public:
 
 private:
 
-	double m_mass{ 0.0 };
-	double m_angle{ 0.0 };
-	double m_angularMass{ 0.0 };
-	double m_angularVelocity{ 0.0 };
-	double m_angularAcceleration{ 0.0 };
+	double mass{ 0.0 };
+	double angle{ 0.0 };
+	double angularMass{ 0.0 };
+	double angularVelocity{ 0.0 };
+	double angularAcceleration{ 0.0 };
 
-	Vector<double> m_force{ 0.0, 0.0 };
+	Vector<double> force{ 0.0, 0.0 };
 	//Vector<double> m_torque{ 0.0, 0.0 };
-	Vector<double> m_position{ 0.0, 0.0 };
-	Vector<double> m_velocity{ 0.0, 0.0 };
-	Vector<double> m_acceleration{ 0.0, 0.0 };
+	Vector<double> position{ 0.0, 0.0 };
+	Vector<double> velocity{ 0.0, 0.0 };
+	Vector<double> acceleration{ 0.0, 0.0 };
 
 };

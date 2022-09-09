@@ -27,8 +27,8 @@ public:
 private:
 
 	//TODO - Fix this later
-	bool m_isAlive{ true };
-	bool m_isActive{ true };
-	GameState* m_previousState{ nullptr };
+	bool isAlive{ true };
+	bool isActive{ true };
+	GameState* previousState{ nullptr };
 
 };

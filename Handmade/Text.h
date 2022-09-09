@@ -44,15 +44,15 @@ private:
 
 	void CreateText();
 
-	std::string m_string;
-	bool m_isDirty{ true };
-	SDL_Point m_textSize{ 0, 0 };
+	std::string string;
+	bool isDirty{ true };
+	SDL_Point textSize{ 0, 0 };
 
-	TTF_Font* m_font{ nullptr };
-	SDL_Texture* m_texture{ nullptr };
-	SDL_Color m_color{ 255, 255, 255 };
+	TTF_Font* font{ nullptr };
+	SDL_Texture* texture{ nullptr };
+	SDL_Color color{ 255, 255, 255 };
 
-	static std::string s_rootFolder;
-	static std::unique_ptr<Fonts> s_fonts;
+	static std::string rootFolder;
+	static std::unique_ptr<Fonts> fonts;
 
 };

@@ -3,20 +3,20 @@
 //======================================================================================================
 bool GameState::IsAlive() const
 {
-	return m_isAlive;
+	return isAlive;
 }
 //======================================================================================================
 bool GameState::IsActive() const
 {
-	return m_isActive;
+	return isActive;
 }
 //======================================================================================================
 void GameState::IsAlive(bool flag)
 {
-	m_isAlive = flag;
+	isAlive = flag;
 }
 //======================================================================================================
 void GameState::IsActive(bool flag)
 {
-	m_isActive = flag;
+	isActive = flag;
 }

@@ -21,16 +21,16 @@ public:
 
 private:
 
-	int m_velocity = 5;
+	int velocity{ 5 };
 
-	BoxCollider m_bound;
-	Sound m_footsteps;
+	BoxCollider bound;
+	Sound footsteps;
 
-	Texture m_idle;
-	Texture m_walk;
+	Texture idle;
+	Texture walk;
 
-	Vector<int> m_position;
-	Vector<int> m_directionWalk;
-	Vector<int> m_directionStand;
+	Vector<int> position;
+	Vector<int> directionWalk;
+	Vector<int> directionStand;
 
 };

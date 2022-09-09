@@ -24,14 +24,14 @@ private:
 
 	bool IsColliding(const OBBCollider* tempBox) const;
 
-	float m_angle{ 0.0f };
+	float angle{ 0.0f };
 
-	Vector<float> m_scale{ 1.0f, 1.0f };
-	Vector<float> m_position{ 0.0f, 0.0f };
-	Vector<float> m_dimension{ 1.0f, 1.0f };
+	Vector<float> scale{ 1.0f, 1.0f };
+	Vector<float> position{ 0.0f, 0.0f };
+	Vector<float> dimension{ 1.0f, 1.0f };
 
-	Vector<float> m_upAxis{ Vector<float>::Up };
-	Vector<float> m_rightAxis{ Vector<float>::Right };
-	std::array<Vector<float>, 4> m_corners{ Vector<float>::Zero };
+	Vector<float> upAxis{ Vector<float>::Up };
+	Vector<float> rightAxis{ Vector<float>::Right };
+	std::array<Vector<float>, 4> corners{ Vector<float>::Zero };
 
 };

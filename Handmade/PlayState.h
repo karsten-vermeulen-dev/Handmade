@@ -19,7 +19,7 @@ public:
 
 private:
 
-	Background m_image;
-	std::vector<GameObject> m_gameObjects;
+	Background image;
+	std::vector<GameObject> gameObjects;
 
 };

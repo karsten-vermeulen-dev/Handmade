@@ -3,72 +3,72 @@
 //======================================================================================================
 bool GameObject::IsAlive() const
 {
-	return m_isAlive;
+	return isAlive;
 }
 //======================================================================================================
 bool GameObject::IsActive() const
 {
-	return m_isActive;
+	return isActive;
 }
 //======================================================================================================
 bool GameObject::IsVisible() const
 {
-	return m_isVisible;
+	return isVisible;
 }
 //======================================================================================================
 void GameObject::IsAlive(bool flag)
 {
-	m_isAlive = flag;
+	isAlive = flag;
 }
 //======================================================================================================
 void GameObject::IsActive(bool flag)
 {
-	m_isActive = flag;
+	isActive = flag;
 }
 //======================================================================================================
 void GameObject::IsVisible(bool flag)
 {
-	m_isVisible = flag;
+	isVisible = flag;
 }
 //======================================================================================================
 float GameObject::GetAngle() const
 {
-	return m_angle;
+	return angle;
 }
 //======================================================================================================
 int GameObject::GetPriority() const
 {
-	return m_priority;
+	return priority;
 }
 //======================================================================================================
 const std::string& GameObject::GetTag() const
 {
-	return m_tag;
+	return tag;
 }
 //======================================================================================================
 const SDL_Point& GameObject::GetPosition() const
 {
-	return m_position;
+	return position;
 }
 //======================================================================================================
 const SDL_Point& GameObject::GetDimension() const
 {
-	return m_dimension;
+	return dimension;
 }
 //======================================================================================================
 void GameObject::SetPosition(int x, int y)
 {
-	m_position.x = x;
-	m_position.y = y;
+	position.x = x;
+	position.y = y;
 }
 //======================================================================================================
 void GameObject::SetDimension(int x, int y)
 {
-	m_dimension.x = x;
-	m_dimension.y = y;
+	dimension.x = x;
+	dimension.y = y;
 }
 //======================================================================================================
 void GameObject::SetTag(const std::string& tag)
 {
-	m_tag = tag;
+	this->tag = tag;
 }

@@ -33,11 +33,11 @@ private:
 	Screen(const Screen&);
 	Screen& operator=(const Screen&);
 
-	int m_width{ 0 };
-	int m_height{ 0 };
+	int width{ 0 };
+	int height{ 0 };
 
-	HWND m_windowHandle{ nullptr };
-	SDL_Window* m_window{ nullptr };
-	SDL_Renderer* m_renderer{ nullptr };
+	HWND windowHandle{ nullptr };
+	SDL_Window* window{ nullptr };
+	SDL_Renderer* renderer{ nullptr };
 
 };

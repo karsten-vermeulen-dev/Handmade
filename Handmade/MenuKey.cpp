@@ -9,10 +9,10 @@ MenuKey::MenuKey(const std::string& filename,
 	int itemTotal,
 	int charWidth,
 	int charHeight,
-	int padding) : m_fontID(filename), m_alignment(alignment)
+	int padding) : fontID(filename), alignment(alignment)
 {
-	m_charDimension.x = charWidth;
-	m_charDimension.y = charHeight;
+	charDimension.x = charWidth;
+	charDimension.y = charHeight;
 
 	auto resolution = Screen::Instance()->GetResolution();
 
@@ -21,8 +21,8 @@ MenuKey::MenuKey(const std::string& filename,
 	//Y - Divide screen height in half and subtract half of the menu's text heights
 	if (alignment == Alignment::Centre)
 	{
-		m_position.x = resolution.x / 2;
-		m_position.y = static_cast<int>((resolution.y / 2) - (itemTotal / 2.0f * charHeight));
+		position.x = resolution.x / 2;
+		position.y = static_cast<int>((resolution.y / 2) - (itemTotal / 2.0f * charHeight));
 	}
 
 	//This will position the text in the bottom half of the screen, centered in X
@@ -30,8 +30,8 @@ MenuKey::MenuKey(const std::string& filename,
 	//Y - Divide screen height in quarters and subtract half of the menu's text heights
 	else if (alignment == Alignment::Bottom)
 	{
-		m_position.x = resolution.x / 2;
-		m_position.y = static_cast<int>((resolution.y - resolution.y / 4) - (itemTotal / 2.0f * charHeight));
+		position.x = resolution.x / 2;
+		position.y = static_cast<int>((resolution.y - resolution.y / 4) - (itemTotal / 2.0f * charHeight));
 	}
 
 	//This will position the text in the bottom half of the screen, aligned on the left
@@ -39,8 +39,8 @@ MenuKey::MenuKey(const std::string& filename,
 	//Y - Divide the screen height in quarters and subtract half of the menu's text heights
 	else if (alignment == Alignment::Left)
 	{
-		m_position.x += padding;
-		m_position.y = static_cast<int>((resolution.y - resolution.y / 4) - (itemTotal / 2.0f * charHeight));
+		position.x += padding;
+		position.y = static_cast<int>((resolution.y - resolution.y / 4) - (itemTotal / 2.0f * charHeight));
 	}
 
 	//this will position the text in the bottom half of the screen, aligned on the right
@@ -48,14 +48,14 @@ MenuKey::MenuKey(const std::string& filename,
 	//Y - divide the screen height in quarters and subtract half of the menu's text heights
 	else if (alignment == Alignment::Right)
 	{
-		m_position.x = resolution.x - padding;
-		m_position.y = static_cast<int>((resolution.y - resolution.y / 4) - (itemTotal / 2.0f * charHeight));
+		position.x = resolution.x - padding;
+		position.y = static_cast<int>((resolution.y - resolution.y / 4) - (itemTotal / 2.0f * charHeight));
 	}
 
 	//pre-load text objects into memory
 	for (int i = 0; i < itemTotal; i++)
 	{
-		m_menuItems.push_back(Text());
+		menuItems.push_back(Text());
 	}
 
 	Text::Load(filename, "MenuFont");
@@ -63,31 +63,31 @@ MenuKey::MenuKey(const std::string& filename,
 //======================================================================================================
 MenuKey::~MenuKey()
 {
-	m_menuItems.clear();
+	menuItems.clear();
 	Text::Unload("MenuFont");
 }
 //======================================================================================================
 MenuKey::Index MenuKey::GetMenuChoice() const
 {
-	return m_menuChoice;
+	return menuChoice;
 }
 //======================================================================================================
 void MenuKey::SetActiveColor(Uint8 r, Uint8 g, Uint8 b)
 {
-	m_activeColor = { r, g, b };
+	activeColor = { r, g, b };
 }
 //======================================================================================================
 void MenuKey::SetInactiveColor(Uint8 r, Uint8 g, Uint8 b)
 {
-	m_inactiveColor = { r, g, b };
+	inactiveColor = { r, g, b };
 }
 //======================================================================================================
 void MenuKey::SetMenuText(Index index, const std::string& text)
 {
-	m_menuItems[static_cast<int>(index)].SetFont("MenuFont");
-	m_menuItems[static_cast<int>(index)].SetString(text);
-	m_menuItems[static_cast<int>(index)].SetSize(text.size() * m_charDimension.x, m_charDimension.y);
-	m_menuItems[static_cast<int>(index)].SetColor(m_inactiveColor.r, m_inactiveColor.g, m_inactiveColor.b);
+	menuItems[static_cast<int>(index)].SetFont("MenuFont");
+	menuItems[static_cast<int>(index)].SetString(text);
+	menuItems[static_cast<int>(index)].SetSize(text.size() * charDimension.x, charDimension.y);
+	menuItems[static_cast<int>(index)].SetColor(inactiveColor.r, inactiveColor.g, inactiveColor.b);
 }
 //======================================================================================================
 void MenuKey::Update(int deltaTime)
@@ -100,55 +100,55 @@ void MenuKey::Update(int deltaTime)
 	//Also check if the last menu item has been reached, which means we need to loop back to the top
 	if (Input::Instance()->IsKeyPressed(HM_KEY_DOWN) && !isKeyPressed)
 	{
-		if (m_menuActive == static_cast<Index>(m_menuItems.size() - 1))
+		if (menuActive == static_cast<Index>(menuItems.size() - 1))
 		{
-			m_menuActive = Index::Index_1;
+			menuActive = Index::Index_1;
 		}
 
 		else
 		{
-			m_menuActive = static_cast<Index>(static_cast<int>(m_menuActive) + 1);
+			menuActive = static_cast<Index>(static_cast<int>(menuActive) + 1);
 		}
 
-		m_isDirty = true;
+		isDirty = true;
 	}
 
 	//Only if UP arrow key is pressed and key was not pressed before move one option up the menu
 	//Also check if the first menu item has been reached, which means we need to go to the bottom
 	if (Input::Instance()->IsKeyPressed(HM_KEY_UP) && !isKeyPressed)
 	{
-		if (m_menuActive == Index::Index_1)
+		if (menuActive == Index::Index_1)
 		{
-			m_menuActive = static_cast<Index>(m_menuItems.size() - 1);
+			menuActive = static_cast<Index>(menuItems.size() - 1);
 		}
 
 		else
 		{
-			m_menuActive = static_cast<Index>(static_cast<int>(m_menuActive) - 1);
+			menuActive = static_cast<Index>(static_cast<int>(menuActive) - 1);
 		}
 
-		m_isDirty = true;
+		isDirty = true;
 	}
 
 	if (Input::Instance()->IsKeyPressed(HM_KEY_RETURN))
 	{
-		m_menuChoice = m_menuActive;
+		menuChoice = menuActive;
 	}
 
 	//Update state of key based on if it's pressed or not which will make sure the next time
 	//the frame is called the above code will either move the menu option or keep it still
 	isKeyPressed = Input::Instance()->IsKeyPressed();
 
-	if (m_isDirty)
+	if (isDirty)
 	{
-		for (size_t i = 0; i < m_menuItems.size(); i++)
+		for (size_t i = 0; i < menuItems.size(); i++)
 		{
-			m_menuItems[i].SetColor(m_inactiveColor.r, m_inactiveColor.g, m_inactiveColor.b);
+			menuItems[i].SetColor(inactiveColor.r, inactiveColor.g, inactiveColor.b);
 		}
 
-		m_menuItems[static_cast<int>(m_menuActive)].SetColor(m_activeColor.r, m_activeColor.g, m_activeColor.b);
+		menuItems[static_cast<int>(menuActive)].SetColor(activeColor.r, activeColor.g, activeColor.b);
 
-		m_isDirty = false;
+		isDirty = false;
 	}
 }
 //======================================================================================================
@@ -157,24 +157,24 @@ bool MenuKey::Render()
 	//Loop through all menu items and position them based on the x and y positional origin
 	//Check what menu style is set so that we can determine where on-screen to render the text
 
-	for (size_t i = 0; i < m_menuItems.size(); i++)
+	for (size_t i = 0; i < menuItems.size(); i++)
 	{
-		if (m_alignment == Alignment::Centre || m_alignment == Alignment::Bottom)
+		if (alignment == Alignment::Centre || alignment == Alignment::Bottom)
 		{
-			m_menuItems[i].Render(m_position.x - (m_menuItems[i].GetSize().x / 2),      //x
-				m_position.y + (i * m_menuItems[i].GetSize().y));     //y
+			menuItems[i].Render(position.x - (menuItems[i].GetSize().x / 2),      //x
+				position.y + (i * menuItems[i].GetSize().y));					  //y
 		}
 
-		else if (m_alignment == Alignment::Left)
+		else if (alignment == Alignment::Left)
 		{
-			m_menuItems[i].Render(m_position.x,                                          //x
-				m_position.y + (i * m_menuItems[i].GetSize().y));     //y
+			menuItems[i].Render(position.x,                                       //x
+				position.y + (i * menuItems[i].GetSize().y));					  //y
 		}
 
-		else if (m_alignment == Alignment::Right)
+		else if (alignment == Alignment::Right)
 		{
-			m_menuItems[i].Render(m_position.x - m_menuItems[i].GetSize().x,            //x
-				m_position.y + (i * m_menuItems[i].GetSize().y));     //y
+			menuItems[i].Render(position.x - menuItems[i].GetSize().x,            //x
+				position.y + (i * menuItems[i].GetSize().y));					  //y
 		}
 	}
 
@@ -183,6 +183,6 @@ bool MenuKey::Render()
 //======================================================================================================
 void MenuKey::Reset()
 {
-	m_menuActive = Index::Index_1;
-	m_menuChoice = Index::None;
+	menuActive = Index::Index_1;
+	menuChoice = Index::None;
 }

@@ -4,28 +4,28 @@
 //======================================================================================================
 bool EndState::OnEnter()
 {
-	m_image.Load("Backgrounds/End_1280x720.png", "Glory.ogg");
-	m_menu = std::make_unique<MenuKey>("Quikhand.ttf", MenuKey::Alignment::Bottom);
-	m_menu->SetMenuText(MenuKey::Index::Index_1, "Play again");
-	m_menu->SetMenuText(MenuKey::Index::Index_2, "Quit game");
+	image.Load("Backgrounds/End_1280x720.png", "Glory.ogg");
+	menu = std::make_unique<MenuKey>("Quikhand.ttf", MenuKey::Alignment::Bottom);
+	menu->SetMenuText(MenuKey::Index::Index_1, "Play again");
+	menu->SetMenuText(MenuKey::Index::Index_2, "Quit game");
 
 	return true;
 }
 //======================================================================================================
 GameState* EndState::Update(int deltaTime)
 {
-	m_image.PlayMusic();
-	m_menu->Update(deltaTime);
+	image.PlayMusic();
+	menu->Update(deltaTime);
 
-	if (m_menu->GetMenuChoice() == static_cast<MenuKey::Index>(MenuOption::Play))
+	if (menu->GetMenuChoice() == static_cast<MenuKey::Index>(MenuOption::Play))
 	{
-		m_image.StopMusic();
+		image.StopMusic();
 		return new PlayState;
 	}
 
-	if (m_menu->GetMenuChoice() == static_cast<MenuKey::Index>(MenuOption::Quit))
+	if (menu->GetMenuChoice() == static_cast<MenuKey::Index>(MenuOption::Quit))
 	{
-		m_image.StopMusic();
+		image.StopMusic();
 		return nullptr;
 	}
 
@@ -34,8 +34,8 @@ GameState* EndState::Update(int deltaTime)
 //======================================================================================================
 bool EndState::Render()
 {
-	m_image.Render();
-	m_menu->Render();
+	image.Render();
+	menu->Render();
 	return true;
 }
 //======================================================================================================

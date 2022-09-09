@@ -25,7 +25,7 @@ public:
 
 private:
 
-	Background m_image;
-	std::unique_ptr<MenuKey> m_menu;
+	Background image;
+	std::unique_ptr<MenuKey> menu;
 
 };

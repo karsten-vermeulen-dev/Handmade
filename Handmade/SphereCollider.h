@@ -18,7 +18,7 @@ public:
 
 private:
 
-	int m_radius{ 0 };
-	Vector<int> m_position;
+	int radius{ 0 };
+	Vector<int> position;
 
 };

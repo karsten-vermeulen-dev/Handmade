@@ -5,20 +5,20 @@
 #include "Texture.h"
 #include "Utility.h"
 
-std::string Texture::s_rootFolder = "Assets/Textures/";
-std::unique_ptr<Textures> Texture::s_textures = std::make_unique<Textures>();
+std::string Texture::rootFolder = "Assets/Textures/";
+std::unique_ptr<Textures> Texture::textures = std::make_unique<Textures>();
 
 //======================================================================================================
 bool Texture::Load(const std::string& filename, const std::string& tag)
 {
-	assert(s_textures->find(tag) == s_textures->end());
+	assert(textures->find(tag) == textures->end());
 
-	SDL_Surface* imageData = IMG_Load((s_rootFolder + filename).c_str());
+	SDL_Surface* imageData = IMG_Load((rootFolder + filename).c_str());
 
 	if (!imageData)
 	{
 		Utility::Log(Utility::Destination::WindowsMessageBox,
-			"Error loading image file \"" + (s_rootFolder + filename) + "\"\n\n"
+			"Error loading image file \"" + (rootFolder + filename) + "\"\n\n"
 			"Possible causes could be a corrupt or missing file. Another reason could be "
 			"that the filename and/or path are incorrectly spelt.", Utility::Severity::Failure);
 		return false;
@@ -27,7 +27,7 @@ bool Texture::Load(const std::string& filename, const std::string& tag)
 	SDL_Texture* texture = SDL_CreateTextureFromSurface(Screen::Instance()->GetRenderer(), imageData);
 	SDL_FreeSurface(imageData);
 
-	s_textures->insert(std::pair<std::string, SDL_Texture*>(tag, texture));
+	textures->insert(std::pair<std::string, SDL_Texture*>(tag, texture));
 	return true;
 }
 //======================================================================================================
@@ -35,127 +35,127 @@ void Texture::Unload(const std::string& tag)
 {
 	if (!tag.empty())
 	{
-		auto it = s_textures->find(tag);
-		assert(it != s_textures->end());
+		auto it = textures->find(tag);
+		assert(it != textures->end());
 		SDL_DestroyTexture(it->second);
-		s_textures->erase(it);
+		textures->erase(it);
 	}
 
 	else
 	{
-		for (const auto& texture : *s_textures)
+		for (const auto& texture : *textures)
 		{
 			SDL_DestroyTexture(texture.second);
 		}
 
-		s_textures->clear();
+		textures->clear();
 	}
 }
 //======================================================================================================
 bool Texture::IsAnimationDead()
 {
-	return m_isAnimationDead;
+	return isAnimationDead;
 }
 //======================================================================================================
 void Texture::IsAnimated(bool flag)
 {
-	m_isAnimated = flag;
+	isAnimated = flag;
 }
 //======================================================================================================
 bool Texture::IsAnimationLooping()
 {
-	return m_isAnimationLooping;
+	return isAnimationLooping;
 }
 //======================================================================================================
 void Texture::IsAnimationLooping(bool flag)
 {
-	m_isAnimationLooping = flag;
+	isAnimationLooping = flag;
 }
 //======================================================================================================
 void Texture::SetCel(int column, int row)
 {
 	//Make sure this function is called AFTER calling 'SetSourceDimension()'
 	//You cannot use zero-based, negative or larger indices than the texture atlas allows
-	assert(column > 0 && column <= m_sourceDimension.x);
-	assert(row > 0 && row <= m_sourceDimension.y);
-	m_cel = ((row - 1) * m_sourceDimension.x) + (column - 1);
+	assert(column > 0 && column <= sourceDimension.x);
+	assert(row > 0 && row <= sourceDimension.y);
+	cel = ((row - 1) * sourceDimension.x) + (column - 1);
 }
 //======================================================================================================
 void Texture::SetAnimationVelocity(float velocity)
 {
 	assert(velocity >= 0.0f);
-	m_animationVelocity = velocity;
+	animationVelocity = velocity;
 }
 //======================================================================================================
 bool Texture::SetTexture(const std::string& tag)
 {
-	auto it = s_textures->find(tag);
-	assert(it != s_textures->end());
-	m_texture = (*it).second;
+	auto it = textures->find(tag);
+	assert(it != textures->end());
+	texture = (*it).second;
 	return true;
 }
 //======================================================================================================
 void Texture::SetDimension(int width, int height)
 {
 	assert(width > 0 && height > 0);
-	m_textureDimension.x = width;
-	m_textureDimension.y = height;
+	textureDimension.x = width;
+	textureDimension.y = height;
 }
 //======================================================================================================
 void Texture::SetSourceDimension(int columns, int rows, int width, int height)
 {
 	assert(rows > 0 && columns > 0 && width > 0 && height > 0);
 
-	m_sourceDimension.x = columns;
-	m_sourceDimension.y = rows;
+	sourceDimension.x = columns;
+	sourceDimension.y = rows;
 
-	m_celDimension.x = width / columns;
-	m_celDimension.y = height / rows;
+	celDimension.x = width / columns;
+	celDimension.y = height / rows;
 }
 //======================================================================================================
 void Texture::ResetAnimation()
 {
-	m_cel = 0;
-	m_isAnimationDead = false;
-	m_animationRunningTime = 0.0f;
-	m_isAnimationLoopFinal = false;
+	cel = 0;
+	isAnimationDead = false;
+	animationRunningTime = 0.0f;
+	isAnimationLoopFinal = false;
 }
 //======================================================================================================
 void Texture::Update(int deltaTime)
 {
 	//If sprite is an animation we have to calculate the 
 	//image cel each frame because it won't be a static value
-	if (m_isAnimated)
+	if (isAnimated)
 	{
-		m_animationRunningTime += deltaTime / 1000.0f;
+		animationRunningTime += deltaTime / 1000.0f;
 
 		//Aquire index value of specific texture cel to 'cut out' using a formula
 		//The image index is zero-based and is a whole number value counting from
 		//top left and going right and down the sprite sheet, and is capable of 'wrapping'
-		m_cel = static_cast<int>(m_animationRunningTime * m_animationVelocity) %
-			static_cast<int>(m_sourceDimension.x * m_sourceDimension.y);
+		cel = static_cast<int>(animationRunningTime * animationVelocity) %
+			static_cast<int>(sourceDimension.x * sourceDimension.y);
 
-		if (m_isAnimationLooping)
+		if (isAnimationLooping)
 		{
-			m_isAnimationDead = false;
-			m_isAnimationLoopFinal = false;
+			isAnimationDead = false;
+			isAnimationLoopFinal = false;
 		}
 
 		//If animation is set to cycle once and the last image cel 
 		//has been reached then flag this as the final animation loop
-		else if (!m_isAnimationLooping &&
-			m_cel == (m_sourceDimension.x * m_sourceDimension.y - 1))
+		else if (!isAnimationLooping &&
+			cel == (sourceDimension.x * sourceDimension.y - 1))
 		{
-			m_isAnimationLoopFinal = true;
+			isAnimationLoopFinal = true;
 		}
 
 		//If this is the final animation, flag to kill entire animation
 		//because even though the animation is marked final, a few more 
 		//frames will be called with the last image cel set, so only
 		//mark it dead when the first image cel comes around again
-		if (m_isAnimationLoopFinal && m_cel == 0)
+		if (isAnimationLoopFinal && cel == 0)
 		{
-			m_isAnimationDead = true;
+			isAnimationDead = true;
 		}
 	}
 }
@@ -163,15 +163,15 @@ void Texture::Update(int deltaTime)
 void Texture::Render(int x, int y, double angle, Flip flip)
 {
 	//Make sure you call 'SetTexture()' after loading the texture
-	assert(m_texture != nullptr);
+	assert(texture != nullptr);
 
 	//Make sure you call 'SetSourceDimension()'
-	assert(m_celDimension.x > 0 && m_celDimension.y > 0);
+	assert(celDimension.x > 0 && celDimension.y > 0);
 
 	//Make sure you call 'SetDimension()'
-	assert(m_textureDimension.x > 0 && m_textureDimension.y > 0);
+	assert(textureDimension.x > 0 && textureDimension.y > 0);
 
-	if (!m_isAnimationDead)
+	if (!isAnimationDead)
 	{
 		//Variables to store rectangular dimensions for the source 
 		//sprite and destination portion of the screen to render to 
@@ -179,22 +179,22 @@ void Texture::Render(int x, int y, double angle, Flip flip)
 		SDL_Rect dst;
 
 		//We need to get exact cel block xy coordinates to 'cut out' 
-		src.x = (m_cel % m_sourceDimension.x) * m_celDimension.x;
-		src.y = (m_cel / m_sourceDimension.x) * m_celDimension.y;
-		src.w = m_celDimension.x;
-		src.h = m_celDimension.y;
+		src.x = (cel % sourceDimension.x) * celDimension.x;
+		src.y = (cel / sourceDimension.x) * celDimension.y;
+		src.w = celDimension.x;
+		src.h = celDimension.y;
 
 		dst.x = x;
 		dst.y = y;
-		dst.w = m_textureDimension.x;
-		dst.h = m_textureDimension.y;
+		dst.w = textureDimension.x;
+		dst.h = textureDimension.y;
 
 		//Use the centre of the sprite as its centre of rotation
 		SDL_Point centrePoint;
-		centrePoint.x = m_textureDimension.x / 2;
-		centrePoint.y = m_textureDimension.y / 2;
+		centrePoint.x = textureDimension.x / 2;
+		centrePoint.y = textureDimension.y / 2;
 
 		SDL_RenderCopyEx(Screen::Instance()->GetRenderer(),
-			m_texture, &src, &dst, angle, &centrePoint, static_cast<SDL_RendererFlip>(flip));
+			texture, &src, &dst, angle, &centrePoint, static_cast<SDL_RendererFlip>(flip));
 	}
 }

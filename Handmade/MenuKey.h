@@ -49,15 +49,15 @@ public:
 
 private:
 
-	std::string m_fontID;
-	Alignment m_alignment;
-	
-	SDL_Color m_activeColor{ 240, 0, 0 };
-	SDL_Color m_inactiveColor{ 255, 255, 255 };
-	SDL_Point m_charDimension;
+	std::string fontID;
+	Alignment alignment;
 
-	std::vector<Text> m_menuItems;
-	Index m_menuActive{ Index::Index_1 };
-	Index m_menuChoice{ Index::None };
+	SDL_Point charDimension;
+	SDL_Color activeColor{ 240, 0, 0 };
+	SDL_Color inactiveColor{ 255, 255, 255 };
+
+	std::vector<Text> menuItems;
+	Index menuActive{ Index::Index_1 };
+	Index menuChoice{ Index::None };
 
 };

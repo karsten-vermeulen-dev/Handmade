@@ -34,10 +34,10 @@ public:
 
 private:
 
-	PlanePoints m_planePoints;
-	int m_distanceFromOrigin{ 0 };
+	PlanePoints planePoints;
+	int distanceFromOrigin{ 0 };
 
-	Vector<int> m_normal{ 0, 0 };
-	Vector<int> m_position{ 0, 0 };
+	Vector<int> normal{ 0, 0 };
+	Vector<int> position{ 0, 0 };
 
 };

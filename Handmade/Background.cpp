@@ -5,13 +5,13 @@
 //======================================================================================================
 Background::~Background()
 {
-	m_music.Unload(m_audioID);
-	m_image.Unload(m_imageID);
+	music.Unload(audioID);
+	image.Unload(imageID);
 }
 //======================================================================================================
 bool Background::Render()
 {
-	m_image.Render();
+	image.Render();
 	return true;
 }
 //======================================================================================================
@@ -19,30 +19,30 @@ void Background::Load(const std::string& imageFilename, const std::string& audio
 {
 	auto resolution = Screen::Instance()->GetResolution();
 
-	m_image.Load(imageFilename, imageFilename);
-	m_image.SetTexture(imageFilename);
-	m_image.SetDimension(resolution.x, resolution.y);
-	m_image.SetSourceDimension(1, 1, resolution.x, resolution.y);
+	image.Load(imageFilename, imageFilename);
+	image.SetTexture(imageFilename);
+	image.SetDimension(resolution.x, resolution.y);
+	image.SetSourceDimension(1, 1, resolution.x, resolution.y);
 
-	m_music.Load(audioFilename, audioFilename);
-	m_music.SetMusic(audioFilename);
-	m_music.SetVolume(0.5f);
+	music.Load(audioFilename, audioFilename);
+	music.SetMusic(audioFilename);
+	music.SetVolume(0.5f);
 
-	m_imageID = imageFilename;
-	m_audioID = audioFilename;
+	imageID = imageFilename;
+	audioID = audioFilename;
 }
 //======================================================================================================
 void Background::PlayMusic()
 {
-	if (!m_isPlaying)
+	if (!isPlaying)
 	{
-		m_music.Play(Music::Loop::Ongoing);
-		m_isPlaying = true;
+		music.Play(Music::Loop::Ongoing);
+		isPlaying = true;
 	}
 }
 //======================================================================================================
 void Background::StopMusic()
 {
-	m_music.Stop();
-	m_isPlaying = false;
+	music.Stop();
+	isPlaying = false;
 }

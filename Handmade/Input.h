@@ -307,17 +307,17 @@ private:
 	Input(const Input&);
 	Input& operator=(Input&);
 
-	char m_key{ ' ' };
+	char key{ ' ' };
 
-	int m_mouseWheel{ 0 };
-	int m_modifier{ HM_MOD_NONE };
-	int m_mouseButton{ HM_MOUSE_NONE };
+	int mouseWheel{ 0 };
+	int modifier{ HM_MOD_NONE };
+	int mouseButton{ HM_MOUSE_NONE };
 
-	bool m_isKeyPressed{ false };
-	bool m_isMouseClicked{ false };
-	bool m_isWindowClosed{ false };
+	bool isKeyPressed{ false };
+	bool isMouseClicked{ false };
+	bool isWindowClosed{ false };
 
-	SDL_Point m_mouseMotion;
-	SDL_Point m_mousePosition;
+	SDL_Point mouseMotion{ 0, 0 };
+	SDL_Point mousePosition{ 0, 0 };
 
 };

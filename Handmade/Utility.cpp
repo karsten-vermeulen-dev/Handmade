@@ -3,11 +3,11 @@
 #include <string>
 #include "Utility.h"
 
-HWND Utility::s_windowHandle = nullptr;
+HWND Utility::windowHandle = nullptr;
 //======================================================================================================
 void Utility::SetWindowHandle(HWND windowHandle)
 {
-	s_windowHandle = windowHandle;
+	windowHandle = windowHandle;
 }
 //======================================================================================================
 void Utility::RemoveCharacter(std::string& string, char character)
@@ -80,7 +80,7 @@ void Utility::Log(Destination destination, float value, const std::string& label
 	{
 		if (destination == Destination::WindowsMessageBox)
 		{
-			MessageBox(s_windowHandle,
+			MessageBox(windowHandle,
 				reinterpret_cast<LPCSTR>(std::to_string(value).c_str()),
 				reinterpret_cast<LPCSTR>(label.c_str()),
 				MB_ICONINFORMATION | MB_OK);
@@ -108,7 +108,7 @@ void Utility::Log(Destination destination, const std::string& message, Severity 
 	{
 		if (destination == Destination::WindowsMessageBox)
 		{
-			MessageBox(s_windowHandle,
+			MessageBox(windowHandle,
 				reinterpret_cast<LPCSTR>(message.c_str()),
 				"Log", static_cast<int>(severity) | MB_OK);
 		}
@@ -170,7 +170,7 @@ void Utility::Log(Destination destination, float x, float y, const std::string& 
 			std::string message = "x = " + std::to_string(x) +
 				", y = " + std::to_string(y);
 
-			MessageBox(s_windowHandle,
+			MessageBox(windowHandle,
 				reinterpret_cast<LPCSTR>(message.c_str()),
 				reinterpret_cast<LPCSTR>(message.c_str()),
 				MB_ICONINFORMATION | MB_OK);
@@ -201,7 +201,7 @@ void Utility::Log(Destination destination, float x, float y, const std::string& 
 //bool ReadResourceData(const string& filename, int fileIndex)
 //{
 //	unsigned int filePosition = 0;
-//	m_file.open(filename, ios_base::binary);
+//	m_file.open(filename, iobase::binary);
 //
 //	if (!m_file)
 //	{

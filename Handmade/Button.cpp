@@ -1,53 +1,54 @@
 #include "Button.h"
 #include "Input.h"
 
+//======================================================================================================
 Button::Button(const SDL_Point& position,
 	const SDL_Point& dimension,
 	const SDL_Rect& textureDimension,
 	const std::string& filename,
 	bool hasClickState,
-	int rowIndex) : m_rowIndex(rowIndex), m_hasClickState(hasClickState)
+	int rowIndex) : rowIndex(rowIndex), hasClickState(hasClickState)
 {
-	m_texture.Load(filename, filename);
-	m_texture.SetDimension(dimension.x, dimension.y);
-	m_texture.SetSourceDimension(textureDimension.x,
+	texture.Load(filename, filename);
+	texture.SetDimension(dimension.x, dimension.y);
+	texture.SetSourceDimension(textureDimension.x,
 		textureDimension.y,
 		textureDimension.w,
 		textureDimension.h);
-	m_texture.SetTexture(filename);
+	texture.SetTexture(filename);
 
-	m_position = position;
-	m_dimension = dimension;
-	m_collider = { position.x, position.y, dimension.x, dimension.y };
+	this->position = position;
+	this->dimension = dimension;
+	collider = { position.x, position.y, dimension.x, dimension.y };
 }
-
+//======================================================================================================
 void Button::Update(int deltaTime)
 {
 	auto mousePosition = Input::Instance()->GetMousePosition();
 	auto isMouseClicked = Input::Instance()->IsMouseClicked(HM_MOUSE_LEFT);
 
-	if (SDL_PointInRect(&mousePosition, &m_collider))
+	if (SDL_PointInRect(&mousePosition, &collider))
 	{
-		if (isMouseClicked && m_hasClickState)
+		if (isMouseClicked && hasClickState)
 		{
-			m_state = State::Clicked;
+			state = State::Clicked;
 		}
 
 		else
 		{
-			m_state = State::Hover;
+			state = State::Hover;
 		}
 	}
 
 	else
 	{
-		m_state = State::Default;
+		state = State::Default;
 	}
 }
-
+//======================================================================================================
 bool Button::Render()
 {
-	m_texture.SetCel(static_cast<int>(m_state), m_rowIndex);
-	m_texture.Render(m_position.x, m_position.y);
+	texture.SetCel(static_cast<int>(state), rowIndex);
+	texture.Render(position.x, position.y);
 	return true;
 }

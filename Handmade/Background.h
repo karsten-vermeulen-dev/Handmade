@@ -21,11 +21,11 @@ public:
 
 protected:
 
-	std::string m_imageID;
-	std::string m_audioID;
-	bool m_isPlaying{ false };
+	std::string imageID;
+	std::string audioID;
+	bool isPlaying{ false };
 
-	Music m_music;
-	Texture m_image;
+	Music music;
+	Texture image;
 
 };

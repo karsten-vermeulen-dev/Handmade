@@ -34,16 +34,16 @@ public:
 
 protected:
 
-	int m_priority{ 0 };
-	float m_angle{ 0.0f };
+	int priority{ 0 };
+	float angle{ 0.0f };
 
-	bool m_isDirty{ true };
-	bool m_isAlive{ true };
-	bool m_isActive{ true };
-	bool m_isVisible{ true };
+	bool isDirty{ true };
+	bool isAlive{ true };
+	bool isActive{ true };
+	bool isVisible{ true };
 
-	std::string m_tag;
-	SDL_Point m_position;
-	SDL_Point m_dimension;
+	std::string tag;
+	SDL_Point position;
+	SDL_Point dimension;
 
 };

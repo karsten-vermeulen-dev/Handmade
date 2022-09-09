@@ -30,11 +30,11 @@ public:
 
 private:
 
-	State m_state;
-	Texture m_texture;
-	SDL_Rect m_collider;
+	Texture texture;
+	SDL_Rect collider;
+	State state{ State::Default };
 
-	int m_rowIndex;
-	bool m_hasClickState;
+	int rowIndex;
+	bool hasClickState;
 
 };

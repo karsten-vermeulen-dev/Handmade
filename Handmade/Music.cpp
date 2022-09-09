@@ -3,8 +3,8 @@
 #include "Music.h"
 #include "Utility.h"
 
-std::string Music::s_rootFolder = "Assets/Music/";
-std::unique_ptr<Musics> Music::s_musics = std::make_unique<Musics>();
+std::string Music::rootFolder = "Assets/Music/";
+std::unique_ptr<Musics> Music::musics = std::make_unique<Musics>();
 
 //======================================================================================================
 bool Music::Initialize(int frequency, int chunkSize)
@@ -21,20 +21,20 @@ bool Music::Initialize(int frequency, int chunkSize)
 //======================================================================================================
 bool Music::Load(const std::string& filename, const std::string& tag)
 {
-	assert(s_musics->find(tag) == s_musics->end());
+	assert(musics->find(tag) == musics->end());
 
-	Mix_Music* music = Mix_LoadMUS((s_rootFolder + filename).c_str());
+	Mix_Music* music = Mix_LoadMUS((rootFolder + filename).c_str());
 
 	if (!music)
 	{
 		Utility::Log(Utility::Destination::WindowsMessageBox,
-			"Error loading music file \"" + (s_rootFolder + filename) + "\"\n\n"
+			"Error loading music file \"" + (rootFolder + filename) + "\"\n\n"
 			"Possible causes could be a corrupt or missing file. Another reason could be "
 			"that the filename and/or path are incorrectly spelt.", Utility::Severity::Failure);
 		return false;
 	}
 
-	s_musics->insert(std::pair<std::string, Mix_Music*>(tag, music));
+	musics->insert(std::pair<std::string, Mix_Music*>(tag, music));
 	return true;
 }
 //======================================================================================================
@@ -42,20 +42,20 @@ void Music::Unload(const std::string& tag)
 {
 	if (!tag.empty())
 	{
-		auto it = s_musics->find(tag);
-		assert(it != s_musics->end());
+		auto it = musics->find(tag);
+		assert(it != musics->end());
 		Mix_FreeMusic(it->second);
-		s_musics->erase(it);
+		musics->erase(it);
 	}
 
 	else
 	{
-		for (const auto& music : *s_musics)
+		for (const auto& music : *musics)
 		{
 			Mix_FreeMusic(music.second);
 		}
 
-		s_musics->clear();
+		musics->clear();
 	}
 }
 //======================================================================================================
@@ -72,9 +72,9 @@ void Music::SetVolume(float volume)
 //======================================================================================================
 bool Music::SetMusic(const std::string& tag)
 {
-	auto it = s_musics->find(tag);
-	assert(it != s_musics->end());
-	m_music = (*it).second;
+	auto it = musics->find(tag);
+	assert(it != musics->end());
+	music = (*it).second;
 	return true;
 }
 //======================================================================================================
@@ -82,7 +82,7 @@ bool Music::Play(Loop loop)
 {
 	if (!Mix_PlayingMusic())
 	{
-		if (Mix_PlayMusic(m_music, static_cast<int>(loop)) == -1)
+		if (Mix_PlayMusic(music, static_cast<int>(loop)) == -1)
 		{
 			Utility::Log(Utility::Destination::WindowsMessageBox,
 				"Music could not be played.", Utility::Severity::Failure);

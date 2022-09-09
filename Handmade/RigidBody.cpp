@@ -3,7 +3,7 @@
 //======================================================================================================
 Vector<double> RigidBody::GravityForce(double mass_1, double mass_2, const Vector<double>& distance)
 {
-	double gravityForce = (GRAVITY * mass_1 * mass_2) /
+	double gravityForce = (gravity * mass_1 * mass_2) /
 		distance.Magnitude() * distance.Magnitude();
 	return distance.Normalize() * gravityForce;
 }
@@ -19,77 +19,77 @@ RigidBody::RigidBody() {}
 //======================================================================================================
 double RigidBody::GetAngle() const
 {
-	return m_angle;
+	return angle;
 }
 //======================================================================================================
 double RigidBody::GetAngularVelocity() const
 {
-	return m_angularVelocity;
+	return angularVelocity;
 }
 //======================================================================================================
 const Vector<double>& RigidBody::GetForce() const
 {
-	return m_force;
+	return force;
 }
 //======================================================================================================
 //const Vector<double>& RigidBody::GetTorque() const
 //{
-//	return m_torque;
+//	return torque;
 //}
 //======================================================================================================
 const Vector<double>& RigidBody::GetPosition() const
 {
-	return m_position;
+	return position;
 }
 //======================================================================================================
 const Vector<double>& RigidBody::GetVelocity() const
 {
-	return m_velocity;
+	return velocity;
 }
 //======================================================================================================
 void RigidBody::SetMass(double mass)
 {
-	m_mass = mass;
+	this->mass = mass;
 }
 //======================================================================================================
 void RigidBody::SetAngle(double angle)
 {
-	m_angle = angle;
+	this->angle = angle;
 }
 //======================================================================================================
 void RigidBody::SetAngularMass(double mass)
 {
-	m_angularMass = mass;
+	angularMass = mass;
 }
 //======================================================================================================
 void RigidBody::SetAngularVelocity(double velocity)
 {
-	m_angularVelocity = velocity;
+	angularVelocity = velocity;
 }
 //======================================================================================================
 void RigidBody::SetForce(const Vector<double>& force)
 {
-	m_force = force;
+	this->force = force;
 }
 //======================================================================================================
 void RigidBody::SetTorque(const Vector<double>& torque)
 {
-	//m_torque = torque;
+	//this->torque = torque;
 }
 //======================================================================================================
 void RigidBody::SetPosition(const Vector<double>& position)
 {
-	m_position = position;
+	this->position = position;
 }
 //======================================================================================================
 void RigidBody::SetVelocity(const Vector<double>& velocity)
 {
-	m_velocity = velocity;
+	this->velocity = velocity;
 }
 //======================================================================================================
 void RigidBody::AddForce(const Vector<double>& force)
 {
-	m_force += force;
+	this->force += force;
 }
 //======================================================================================================
 void RigidBody::AddTorque(const Vector<double>& force, const Vector<double>& contactPoint)
@@ -98,32 +98,32 @@ void RigidBody::AddTorque(const Vector<double>& force, const Vector<double>& con
 
 	//T = F x d
 	//TODO - Fix this
-	Vector<double> distance = contactPoint - m_position;
+	Vector<double> distance = contactPoint - position;
 	//Vector<double> torque = glm::cross(force, distance);
-	//m_torque += torque;
+	//torque += torque;
 }
 //======================================================================================================
 void RigidBody::Update(float deltaTime)
 {
-	if (m_mass > 0.0) m_acceleration = (m_force / static_cast<float>(m_mass));
-	//if (m_angularMass > 0.0) m_angularAcceleration = glm::length(m_torque) / m_angularMass;
+	if (mass > 0.0) acceleration = (force / static_cast<float>(mass));
+	//if (angularMass > 0.0) angularAcceleration = glm::length(torque) / angularMass;
 
-	Vector<double> oldVelocity = m_velocity;
-	m_velocity += m_acceleration * deltaTime;
-	m_position += (m_velocity + oldVelocity) * 0.5f * deltaTime;
+	Vector<double> oldVelocity = velocity;
+	velocity += acceleration * deltaTime;
+	position += (velocity + oldVelocity) * 0.5f * deltaTime;
 
-	double oldAngularVelocity = m_angularVelocity;
-	m_angularVelocity += m_angularAcceleration * deltaTime;
-	m_angle += (m_angularVelocity + oldAngularVelocity) * 0.5 * deltaTime;
+	double oldAngularVelocity = angularVelocity;
+	angularVelocity += angularAcceleration * deltaTime;
+	angle += (angularVelocity + oldAngularVelocity) * 0.5 * deltaTime;
 
 	//Extra code to be sorted later (WIP)
 	//Here we assume AngVel is a Vec3 object
-	//m_angularAcceleration = m_torque;
-	/*if (m_angVel.SqLen() > 0)
+	//angularAcceleration = torque;
+	/*if (angVel.SqLen() > 0)
 	{
-		Vec3f axis = m_angVel;
+		Vec3f axis = angVel;
 		axis.Normalise();
-		Quaternion rotThisFrame(axis, m_angVel.Len() * dt);
-		m_quat = rotThisFrame * m_quat;
+		Quaternion rotThisFrame(axis, angVel.Len() * dt);
+		quat = rotThisFrame * quat;
 	}*/
 }

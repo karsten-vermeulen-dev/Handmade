@@ -23,9 +23,9 @@ public:
 
 private:
 
-	Mix_Chunk* m_sound{ nullptr };
+	Mix_Chunk* sound{ nullptr };
 
-	static std::string s_rootFolder;
-	static std::unique_ptr<Sounds> s_sounds;
+	static std::string rootFolder;
+	static std::unique_ptr<Sounds> sounds;
 
 };

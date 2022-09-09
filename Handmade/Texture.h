@@ -44,21 +44,21 @@ public:
 
 private:
 
-	int m_cel{ 0 };
-	float m_animationVelocity{ 0.0f };
-	float m_animationRunningTime{ 0.0f };
+	int cel{ 0 };
+	float animationVelocity{ 0.0f };
+	float animationRunningTime{ 0.0f };
 
-	bool m_isAnimated{ false };
-	bool m_isAnimationDead{ false };
-	bool m_isAnimationLooping{ true };
-	bool m_isAnimationLoopFinal{ false };
+	bool isAnimated{ false };
+	bool isAnimationDead{ false };
+	bool isAnimationLooping{ true };
+	bool isAnimationLoopFinal{ false };
 
-	SDL_Texture* m_texture{ nullptr };
-	SDL_Point m_celDimension = { 0, 0 };
-	SDL_Point m_sourceDimension = { 1, 1 };
-	SDL_Point m_textureDimension = { 0, 0 };
+	SDL_Texture* texture{ nullptr };
+	SDL_Point celDimension = { 0, 0 };
+	SDL_Point sourceDimension = { 1, 1 };
+	SDL_Point textureDimension = { 0, 0 };
 
-	static std::string s_rootFolder;
-	static std::unique_ptr<Textures> s_textures;
+	static std::string rootFolder;
+	static std::unique_ptr<Textures> textures;
 
 };

@@ -32,10 +32,14 @@ public:
 
 	T Magnitude() const;
 	T SqrMagnitude() const;
-	T Distance(const Vector<T>& second) const;
 	T Dot(const Vector<T>& second) const;
+	T AngleBetween(const Vector<T>& second);
+	T Distance(const Vector<T>& second) const;
 
 	Vector<T> Normalize() const;
+	Vector<T> Perpendicular() const;
+	Vector<T> VectorFromAngle(float angle) const;
+	Vector<T> Rotate(const Vector<T>& vector, float angle);
 	Vector<T> Lerp(const Vector<T>& second, float delta) const;
 	Vector<T> Slerp(const Vector<T>& second, float delta) const;
 
@@ -127,19 +131,45 @@ template <class T> T Vector<T>::SqrMagnitude() const
 	return (x * x) + (y * y);
 }
 //======================================================================================================
-template <class T> T Vector<T>::Distance(const Vector<T>& second) const
-{
-	return (*this - second).Magnitude();
-}
-//======================================================================================================
 template <class T> T Vector<T>::Dot(const Vector<T>& second) const
 {
 	return (x * second.x) + (y * second.y);
 }
 //======================================================================================================
+template <class T> T Vector<T>::AngleBetween(const Vector<T>& second)
+{
+	return acos((Dot(second)) / (Magnitude() * second.Magnitude()));
+}
+//======================================================================================================
+template <class T> T Vector<T>::Distance(const Vector<T>& second) const
+{
+	return (*this - second).Magnitude();
+}
+//======================================================================================================
 template <class T> Vector<T> Vector<T>::Normalize() const
 {
 	return *this / Magnitude();
+}
+//======================================================================================================
+template <class T> Vector<T> Vector<T>::Perpendicular() const
+{
+	return Vector<T>(-y, x);
+}
+//======================================================================================================
+template <class T> Vector<T> Vector<T>::VectorFromAngle(float angle) const
+{
+	Vector<T> result;
+	result.x = cos(angle);
+	result.y = sin(angle);
+	return result;
+}
+//======================================================================================================
+template <class T> Vector<T> Vector<T>::Rotate(const Vector<T>& vector, float angle)
+{
+	Vector<T> result;
+	result.x = cos(angle) * vector.x - sin(angle) * vector.y;
+	result.y = sin(angle) * vector.x + cos(angle) * vector.y;
+	return result;
 }
 //======================================================================================================
 template <class T> Vector<T> Vector<T>::Lerp(const Vector<T>& second, float delta) const
